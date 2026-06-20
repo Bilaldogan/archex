@@ -1,0 +1,110 @@
+# archex profile — Edgar Pech, "Manuel des Sociétés Anonymes Fonctionnant
+# en Turquie" (5e éd., 1911). Reference example: one company per worklist entry.
+name: pech-1911
+description: >
+  Ottoman joint-stock companies catalogued by Pech (1911). Extracts company
+  metadata + full board roster with per-member ethno-religious classification
+  and page-level provenance.
+
+input:
+  image_dir: /tmp/pech_full
+  worklist: pech-1911.worklist.json   # [{id, fr_name, images[], page_start, page_end, sector}]
+  out_dir: pech-1911_out
+
+ocr:
+  engine: tesseract
+  lang: fra
+  psm: 6
+  preprocess: { grayscale: true, contrast: 1.8, sharpen: true, max_width: 2500 }
+
+llm:
+  provider: groq
+  model: llama-3.3-70b-versatile
+  temperature: 0.3
+  max_tokens: 8192
+  rate_limit_delay: 6.0
+  system_prompt: |
+    Sen bir tarihsel arsiv veri cikarim uzmanisin. Sana E. Pech "Manuel des
+    societes anonymes fonctionnant en Turquie" (5e ed., 1911) kitabindan bir
+    sirkete ait OCR ile cikarilmis Fransizca metin verilecek.
+
+    ONEMLI KURALLAR:
+    - Metni dikkatle oku. Sayilari/tarihleri/isimleri birebir aktar.
+    - Her olgusal degerin yanina Pech basili sayfa nosunu ekle.
+    - Yonetim kurulu (Conseil d'Administration) uyelerini TAM listele: isim + unvan.
+    - Her kurul uyesi/direktor icin etnik-dini siniflandirma yap (isimden cikarim):
+      sinif: "Musluman","Ermeni","Rum","Yahudi","Levanten","Fransiz","Ingiliz",
+             "Alman","Italyan","Avusturyali","Rus","Diger-Avrupali","Belirsiz"
+      guven: "kesin" | "olasi" | "belirsiz"
+      gerekce: kisa (orn "-ian soneki Ermeni"; "bin/Bey + Arapca ad Musluman")
+    - Yil-yil isletme tablosu (EXPLOITATION) VARSA tum satirlari cikar.
+    - Bilgi yoksa alani null birak, UYDURMA.
+    - OCR hatalari olabilir, mantikli duzelt. Emin degilsen notes alanina belirt.
+
+    SADECE asagidaki JSON'u dondur (markdown fence YOK, aciklama YOK):
+    {
+     "fr_name": "...", "tr_name": null, "sector": "...",
+     "nationality": "Osmanli|Ingiliz|Fransiz|Alman|...", "legal_form": "...",
+     "founding": {"text":"...","date":"...","firman":"...","page":0},
+     "concession_duration": null,
+     "capital": [{"stage":"ilk","amount":"...","shares":"...","page":0}],
+     "headquarters": "...", "branches": [],
+     "share_characteristics": null, "profit_distribution": null, "quotation": null,
+     "board": [{"name":"...","title":"...","sinif":"...","guven":"...","gerekce":"..."}],
+     "director": {"name":"...","title":"...","sinif":"...","guven":"...","gerekce":"..."},
+     "exploitation": [],
+     "composition_summary": {"toplam":0,"musluman":0,"gayrimuslim":0,"belirsiz":0},
+     "pages_used": [], "extraction_confidence": "yuksek|orta|dusuk", "notes": "..."
+    }
+  user_template: |
+    SIRKET: {fr_name}
+    Pech sayfalari: {page_range}
+
+    OCR METNI:
+    {ocr_text}
+
+    JSON ciktisi:
+
+normalize:
+  taxonomy:
+    - field: board
+      item_key: sinif
+      default: Belirsiz
+      canonical: [Musluman, Ermeni, Rum, Yahudi, Levanten, Fransiz, Ingiliz,
+                  Alman, Italyan, Avusturyali, Rus, Diger-Avrupali, Belirsiz]
+      aliases:
+        "Müslüman": Musluman
+        "Fransız": Fransiz
+        "İngiliz": Ingiliz
+        "İtalyan": Italyan
+        "Avusturyalı": Avusturyali
+        "Belçikalı": Diger-Avrupali
+        "Levanten|Italyan": Levanten
+  recompute:
+    - target: composition_summary
+      from: board
+      key: sinif
+      buckets:
+        toplam: "*"
+        musluman: [Musluman]
+        gayrimuslim: [Ermeni, Rum, Yahudi]
+        yabanci: [Fransiz, Ingiliz, Alman, Italyan, Avusturyali, Rus, Diger-Avrupali, Levanten]
+        belirsiz: [Belirsiz]
+
+export:
+  fields:
+    - { col: ID, path: _id }
+    - { col: FR_Name, path: fr_name }
+    - { col: TR_Name, path: tr_name }
+    - { col: Sektor, path: _source.sector }
+    - { col: Milliyet, path: nationality }
+    - { col: Kurulus, path: founding.date }
+    - { col: Sayfa, path: founding.page }
+    - { col: Merkez, path: headquarters }
+    - { col: Toplam, path: composition_summary.toplam }
+    - { col: Musluman, path: composition_summary.musluman }
+    - { col: Gayrimuslim, path: composition_summary.gayrimuslim }
+    - { col: Yabanci, path: composition_summary.yabanci }
+    - { col: Board, path: board, list: "{name} ({title}) [{sinif}:{guven}]", sep: " | " }
+    - { col: Guven, path: extraction_confidence }
+    - { col: Notlar, path: notes }

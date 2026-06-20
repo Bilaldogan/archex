@@ -1,0 +1,26 @@
+[project]
+name = "archex"
+version = "0.1.0"
+description = "Config-driven historical document → structured data extractor (OCR + LLM)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "pyyaml>=6.0",
+    "requests>=2.31",
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+easyocr = ["easyocr>=1.7"]
+export = ["openpyxl>=3.1"]
+
+[project.scripts]
+archex = "archex.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["archex*"]
