@@ -66,6 +66,14 @@ llm:
 
     JSON output:
 
+# Deterministic sanity checks → `archex validate` flags suspect rows.
+validate:
+  rules:
+    - { field: surname, type: required, msg: "missing surname" }
+    - { field: given_name, type: required, msg: "missing given name" }
+    - { field: home_address, type: required, msg: "no residence/address" }
+    - { field: _source.page_start, type: range, min: 1, max: 2000, msg: "page out of range" }
+
 export:
   fields:
     - { col: Surname, path: surname }
@@ -74,3 +82,4 @@ export:
     - { col: WorkAddress, path: work_address }
     - { col: HomeAddress, path: home_address }
     - { col: Page, path: _source.page_start }
+    - { col: Flags, path: _flags, list: "{rule}:{field}", sep: "; " }

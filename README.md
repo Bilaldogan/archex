@@ -26,8 +26,9 @@ git clone https://github.com/Bilaldogan/archex && cd archex
 pip install -e ".[export]"          # needs the `tesseract` binary too
 export GROQ_API_KEY=...             # free key from console.groq.com
 
-archex extract --profile boston-1916   # OCR + LLM → JSON (the bundled page)
-archex export  --profile boston-1916 --format csv,xlsx
+archex extract  --profile boston-1916   # OCR + LLM → JSON (the bundled page)
+archex validate --profile boston-1916   # flag suspect rows (missing/out-of-range)
+archex export   --profile boston-1916 --format csv,xlsx
 ```
 
 You get ~68 rows like:
@@ -48,6 +49,7 @@ Everything source-specific lives in `profiles/<name>.yaml`:
 - **`llm`** — provider/model + your extraction prompt and output JSON shape
 - **`extract.mode`** — `single` (one record per page) or `multi` (many per page)
 - **`normalize`** — canonicalise labels + deterministically recompute summaries
+- **`validate`** — rules (required / range / regex / enum) that flag suspect rows
 - **`export`** — which JSON fields become which columns
 
 ```bash
@@ -97,8 +99,7 @@ Use either as a template for your own archive.
 
 - Cross-source reconciliation — match the same entity across two sources,
   diff field-by-field, flag conflicts
-- Field-level confidence + validation rules (e.g. date/range sanity checks)
-- Human-in-the-loop review — flag low-confidence records for correction
+- Human-in-the-loop review — surface `validate`-flagged records for correction
 
 ## Keywords
 

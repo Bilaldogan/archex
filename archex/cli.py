@@ -8,6 +8,7 @@ import sys
 from . import compile as compile_mod
 from . import normalize as normalize_mod
 from . import pipeline
+from . import validate as validate_mod
 from .config import load_profile, resolve_profile_path
 
 PROFILE_TEMPLATE = """\
@@ -83,6 +84,10 @@ def cmd_normalize(args):
     normalize_mod.run_normalize(_profile(args))
 
 
+def cmd_validate(args):
+    validate_mod.run_validate(_profile(args), write=not args.no_write)
+
+
 def cmd_export(args):
     formats = [s.strip() for s in args.format.split(",") if s.strip()]
     compile_mod.run_export(_profile(args), formats, out_base=args.out)
@@ -109,6 +114,11 @@ def main(argv=None):
     pn = sub.add_parser("normalize", help="deterministic label/summary cleanup")
     pn.add_argument("--profile", required=True)
     pn.set_defaults(func=cmd_normalize)
+
+    pv = sub.add_parser("validate", help="flag records that violate field rules")
+    pv.add_argument("--profile", required=True)
+    pv.add_argument("--no-write", action="store_true", help="report only, don't write _flags")
+    pv.set_defaults(func=cmd_validate)
 
     px = sub.add_parser("export", help="flatten records to csv/xlsx/json")
     px.add_argument("--profile", required=True)

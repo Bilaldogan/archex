@@ -9,6 +9,9 @@ Son guncelleme: 2026-06-29
 - **Multi-record mode** eklendi: bir sayfa → N kayit (profile.extract.mode: multi),
   compile her kaydi ayri satir yapar + page-level provenance (_source) ekler
 - **json_mode** eklendi (groq/openai response_format) → buyuk sayfalarda gecerli-JSON garantisi
+- **Field validation** eklendi: profile.validate.rules (required/range/regex/enum/max_len),
+  multi-record uyumlu, kayitlara _flags yazar + ozet rapor, CLI `validate` komutu.
+  Boston demo: 3/68 kayit flagged (adres eksik), export'ta Flags kolonu
 - **Calisan demo (uctan uca dogrulandi):** profiles/boston-1916.yaml — 1916 Boston
   City Directory (kamu mali) bir sayfa → 68 yapilandirilmis kayit (ad/meslek/adres).
   examples/ : gorsel + worklist + sample-output.csv
@@ -20,7 +23,7 @@ Son guncelleme: 2026-06-29
 2. GitHub topics ekle: ocr, genealogy, city-directory, document-extraction, llm,
    data-extraction, digital-humanities, historical-records
 3. Daha fazla ornek profil (passenger list, census) — SEO genisletme
-4. Roadmap: cross-source reconciliation · field confidence · human-in-the-loop review
+4. Roadmap: cross-source reconciliation · human-in-the-loop review (validate-flag'li kayitlar)
 
 ## Notlar
 - Free-tier LLM tek istekte ~110 kayit cikaramiyor (413/token). Demo sayfayi

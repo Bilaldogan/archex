@@ -1,69 +1,69 @@
-Surname,GivenName,Occupation,WorkAddress,HomeAddress,Page
-Fuerst,Alexander,binder,Mass Historical Soc,413 Mass av [Belmont,801
-Fuessel,George T,salesman,149 Staniford,h at,801
-Fugazza,John,helper,,8 Porter,801
-Fugere,Placide,laborer,,bds 6 Trenton E B,801
-Fuerst,Ralph A,furs,,h 40 Isabella,801
-Fuerst,Rene,auto sundries,,rms 40 Isabella,801
-Fuggio,Maurizio,bootblack,808 W Broadway S B,h 261 D do,801
-Fuginiti,Vincenzo,plasterer,,h 27 Chelsea E B,801
-Fugler,Paul,supt,400 Congress,h 237 Talbot_av Dor [bds 88 Highland Park av Rox,801
-Fugler,Harry J,plumber,,h 101 Alexander Dor,801
-Fugler,John A,,,h 38 Highland Park avy Rox,801
-Fugler,Leif N,helper,,bds 38 Highland Park av Rox,801
-Fugunda,Frank,,,rms 113 Berkeley,801
-Fuhrman,Lewis,real estate,27 School rm 318,h at Somy [av Rox,801
-Fuhrmann,Karl W,upholsterer,,bh 32 Humboldt,801
-Fuhrmann,Max,musician,Symphony H,,801
-Fuhrmann,Sophia V,widow Adolph,,h 2 Chauncey p! Chsn,801
-Fuhrmann,Walter,electrician,,bds 2 Chauncey pl Chsn,801
-Fuhs,Frank F,brassworker,,h r 841 E Second S B,801
-Fuhs,Philip P,coremaker,,h 819 EB Second S B,801
-Fulchino,Vincenzo,laborer,,h 12 Hooten ct E B,801
-Fulco,Antonio,,,,801
-Fulco,Mary,widow Antonio,,h 92 Albion,801
-Fulginiti,Domenico,driver,,h 4 Fountain pl,801
-Fulginiti,Frank,tailor,,h 27 Chelsea E B,801
-Fulginiti,James,mason,,h 27 Chelsea E B,801
-Fulginiti,Salvatore,barber,11 Pearl,bds 150 Salem,801
-Fulgoni,Luigi,packer,32 Canal,h at Medford,801
-Fulgoni,Oreste,laborer,,h 166 Cottage E B,801
-Fulham,Elizabeth H,variety,169 Byron E B,b do,801
-Fulham,Ellen,widow John,,h 169 Byron EB,801
-Fulham,John N,treas and mgr,26 Boston Fish pier,8 Bb at Winthrop,801
-Fulham,Nicholas L,(Fulham & Herbert),12 Boston Fish pier S B,h at Winthro,801
-Fulham,Fulham & Herbert,fish,12 Boston Fish pier S B,bh at B'line,801
-Fullam,David,transfer clerk Int Trust Co,45 Milk,,801
-Fuller,Chester,dairyman,63 Endicott,h at Maple-woo,801
-Fuller,Chester C,mfrs agt and prop Howe Manufacturing Co,61 Coolfdge rd Alls,h do,801
-Fuller,Chester L,trav auditor,50 Oliver rm 409,h 20 Holborn Rox [Pond J P,801
-Fuller,Chester M,pianotuner,377 Boylston,bds 18,801
-Fuller,Clara G,widow Jabez W,,h 128 Park Dor,801
-Fuller,Clarence D,mgr,46 Clinton rm 414,h at Lex-ington,801
-Fuller,Clarence E,draftsman,248 Boylston,h at Quincy _ ([B'line,801
-Fuller,Clarence E,ins agent,70 Kilby rm 1,house at,801
-Fuller,Clarence M,bookkeeper,,bds 1 Oxford ter,801
-Fuller,Cora F,bookkeeper,,bds 40 King Dor,801
-Fuller,Dana L,,,33 North h at Medford,801
-Fuller,Donald H,salesman,50 Congress rm 530,h at Winthrop [ton do,801
-Fuller,Edgar C,clerk,121 Warren Rox,h 14 Kemp-,801
-Fuller,Edgar L,sec,93 Causeway,h at Melrose Hlds,801
-Fuller,Edward,watchman,,bds 7 Champney pl Rox,801
-Fuller,Edward,,,h 82 Worcester,801
-Fuller,Edward,Mrs,,bds Copley Sq Hotel [Rox,801
-Fuller,Edward G,chauffeur,,h 29 S Huntington av,801
-Fuller,Edward H,,,39 Boylston h at Medford,801
-Fuller,Edward W,real estate,294 Wash rm 624,h 82 Worcester,801
-Fuller,Ellen M,widow Nathaniel,,bh 571 Norfolk Mat,801
-Fuller,Elmer A,teamster,,h 2 Sacicville Chsn,801
-Fuller,Emma G,widow Joseph A,,h 40 King Dor,801
-Fuller,Everett L,treas,134 Federal,h at Melrose Hids,801
-Fuller,Florence O,widow George E,,h 38 Ivy,801
-Fuller,Florence S,associate editor,,h 55 Mapleton Br,801
-Fuller,Frances H,,,h 1082 Commonwealth av Alls,801
-Fuller,Francis,,,h 809 Saratoga E B,801
-Fuller,Frank,asst engineer,Custom House,h 4313 Wash Ros field,801
-Fuller,Frank A,decorator,367 Boylston,h at Wake-,801
-Fuller,Frank DeW,sales mgr P & F Corbin,24 Milk rm 1112,bds Hotel Westminster,801
-Fuller,Frank E,driver,,bds 13 Woodville Rox,801
-Fuller,Frank E,printer,,h 29 Ditson Dor,801
+Surname,GivenName,Occupation,WorkAddress,HomeAddress,Page,Flags
+Fuerst,Alexander,binder,Mass Historical Soc,413 Mass av [Belmont,801,
+Fuessel,George T,salesman,149 Staniford,h at,801,
+Fugazza,John,helper,,8 Porter,801,
+Fugere,Placide,laborer,,bds 6 Trenton E B,801,
+Fuerst,Ralph A,furs,,h 40 Isabella,801,
+Fuerst,Rene,auto sundries,,rms 40 Isabella,801,
+Fuggio,Maurizio,bootblack,808 W Broadway S B,h 261 D do,801,
+Fuginiti,Vincenzo,plasterer,,h 27 Chelsea E B,801,
+Fugler,Paul,supt,400 Congress,h 237 Talbot_av Dor [bds 88 Highland Park av Rox,801,
+Fugler,Harry J,plumber,,h 101 Alexander Dor,801,
+Fugler,John A,,,h 38 Highland Park avy Rox,801,
+Fugler,Leif N,helper,,bds 38 Highland Park av Rox,801,
+Fugunda,Frank,,,rms 113 Berkeley,801,
+Fuhrman,Lewis,real estate,27 School rm 318,h at Somy [av Rox,801,
+Fuhrmann,Karl W,upholsterer,,bh 32 Humboldt,801,
+Fuhrmann,Max,musician,Symphony H,,801,required:home_address
+Fuhrmann,Sophia V,widow Adolph,,h 2 Chauncey p! Chsn,801,
+Fuhrmann,Walter,electrician,,bds 2 Chauncey pl Chsn,801,
+Fuhs,Frank F,brassworker,,h r 841 E Second S B,801,
+Fuhs,Philip P,coremaker,,h 819 EB Second S B,801,
+Fulchino,Vincenzo,laborer,,h 12 Hooten ct E B,801,
+Fulco,Antonio,,,,801,required:home_address
+Fulco,Mary,widow Antonio,,h 92 Albion,801,
+Fulginiti,Domenico,driver,,h 4 Fountain pl,801,
+Fulginiti,Frank,tailor,,h 27 Chelsea E B,801,
+Fulginiti,James,mason,,h 27 Chelsea E B,801,
+Fulginiti,Salvatore,barber,11 Pearl,bds 150 Salem,801,
+Fulgoni,Luigi,packer,32 Canal,h at Medford,801,
+Fulgoni,Oreste,laborer,,h 166 Cottage E B,801,
+Fulham,Elizabeth H,variety,169 Byron E B,b do,801,
+Fulham,Ellen,widow John,,h 169 Byron EB,801,
+Fulham,John N,treas and mgr,26 Boston Fish pier,8 Bb at Winthrop,801,
+Fulham,Nicholas L,(Fulham & Herbert),12 Boston Fish pier S B,h at Winthro,801,
+Fulham,Fulham & Herbert,fish,12 Boston Fish pier S B,bh at B'line,801,
+Fullam,David,transfer clerk Int Trust Co,45 Milk,,801,required:home_address
+Fuller,Chester,dairyman,63 Endicott,h at Maple-woo,801,
+Fuller,Chester C,mfrs agt and prop Howe Manufacturing Co,61 Coolfdge rd Alls,h do,801,
+Fuller,Chester L,trav auditor,50 Oliver rm 409,h 20 Holborn Rox [Pond J P,801,
+Fuller,Chester M,pianotuner,377 Boylston,bds 18,801,
+Fuller,Clara G,widow Jabez W,,h 128 Park Dor,801,
+Fuller,Clarence D,mgr,46 Clinton rm 414,h at Lex-ington,801,
+Fuller,Clarence E,draftsman,248 Boylston,h at Quincy _ ([B'line,801,
+Fuller,Clarence E,ins agent,70 Kilby rm 1,house at,801,
+Fuller,Clarence M,bookkeeper,,bds 1 Oxford ter,801,
+Fuller,Cora F,bookkeeper,,bds 40 King Dor,801,
+Fuller,Dana L,,,33 North h at Medford,801,
+Fuller,Donald H,salesman,50 Congress rm 530,h at Winthrop [ton do,801,
+Fuller,Edgar C,clerk,121 Warren Rox,h 14 Kemp-,801,
+Fuller,Edgar L,sec,93 Causeway,h at Melrose Hlds,801,
+Fuller,Edward,watchman,,bds 7 Champney pl Rox,801,
+Fuller,Edward,,,h 82 Worcester,801,
+Fuller,Edward,Mrs,,bds Copley Sq Hotel [Rox,801,
+Fuller,Edward G,chauffeur,,h 29 S Huntington av,801,
+Fuller,Edward H,,,39 Boylston h at Medford,801,
+Fuller,Edward W,real estate,294 Wash rm 624,h 82 Worcester,801,
+Fuller,Ellen M,widow Nathaniel,,bh 571 Norfolk Mat,801,
+Fuller,Elmer A,teamster,,h 2 Sacicville Chsn,801,
+Fuller,Emma G,widow Joseph A,,h 40 King Dor,801,
+Fuller,Everett L,treas,134 Federal,h at Melrose Hids,801,
+Fuller,Florence O,widow George E,,h 38 Ivy,801,
+Fuller,Florence S,associate editor,,h 55 Mapleton Br,801,
+Fuller,Frances H,,,h 1082 Commonwealth av Alls,801,
+Fuller,Francis,,,h 809 Saratoga E B,801,
+Fuller,Frank,asst engineer,Custom House,h 4313 Wash Ros field,801,
+Fuller,Frank A,decorator,367 Boylston,h at Wake-,801,
+Fuller,Frank DeW,sales mgr P & F Corbin,24 Milk rm 1112,bds Hotel Westminster,801,
+Fuller,Frank E,driver,,bds 13 Woodville Rox,801,
+Fuller,Frank E,printer,,h 29 Ditson Dor,801,
