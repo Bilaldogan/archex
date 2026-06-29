@@ -12,6 +12,11 @@ Son guncelleme: 2026-06-29
 - **Field validation** eklendi: profile.validate.rules (required/range/regex/enum/max_len),
   multi-record uyumlu, kayitlara _flags yazar + ozet rapor, CLI `validate` komutu.
   Boston demo: 3/68 kayit flagged (adres eksik), export'ta Flags kolonu
+- **Cross-source reconciliation** (killer feature) eklendi: archex/reconcile.py,
+  iki kaynagi key ile eslestir → alan-alan diff → conflicts.csv. Homonym-safe
+  (belirsiz key'leri atlar). CLI `reconcile --profile A --against B`. Sentetik
+  Boston 1916↔1917 testiyle dogrulandi (3 conflict dogru yakalandi).
+- util.iter_records() helper'i eklendi (multi/single flatten); reconcile kullaniyor
 - **Calisan demo (uctan uca dogrulandi):** profiles/boston-1916.yaml — 1916 Boston
   City Directory (kamu mali) bir sayfa → 68 yapilandirilmis kayit (ad/meslek/adres).
   examples/ : gorsel + worklist + sample-output.csv
@@ -23,7 +28,8 @@ Son guncelleme: 2026-06-29
 2. GitHub topics ekle: ocr, genealogy, city-directory, document-extraction, llm,
    data-extraction, digital-humanities, historical-records
 3. Daha fazla ornek profil (passenger list, census) — SEO genisletme
-4. Roadmap: cross-source reconciliation · human-in-the-loop review (validate-flag'li kayitlar)
+4. Refactor: compile/validate de util.iter_records'a gecirilebilir (3 yerde flatten tekrari)
+5. Roadmap: fuzzy entity matching (reconcile) · human-in-the-loop review (validate-flag'li kayitlar)
 
 ## Notlar
 - Free-tier LLM tek istekte ~110 kayit cikaramiyor (413/token). Demo sayfayi

@@ -83,3 +83,9 @@ export:
     - { col: HomeAddress, path: home_address }
     - { col: Page, path: _source.page_start }
     - { col: Flags, path: _flags, list: "{rule}:{field}", sep: "; " }
+
+# Cross-source defaults for `archex reconcile --profile boston-1916 --against <other>`.
+# e.g. reconcile two directory years to see who moved or changed jobs.
+reconcile:
+  key: [surname, given_name]
+  compare: [occupation, work_address, home_address]

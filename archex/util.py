@@ -1,6 +1,8 @@
 """Small shared helpers: dot-path access for nested records, JSON repair."""
 from __future__ import annotations
 
+import json
+import os
 import re
 from typing import Any
 
@@ -51,3 +53,24 @@ def extract_first_json_object(content: str) -> str | None:
 
 def remove_trailing_commas(s: str) -> str:
     return re.sub(r",\s*([}\]])", r"\1", s)
+
+
+def iter_records(profile):
+    """Yield flattened records from a profile's out_dir.
+
+    In multi mode each output file wraps a list under records_key; every item is
+    yielded merged with page-level provenance (_id / _source). In single mode the
+    whole file is one record. Shared by compile / validate / reconcile.
+    """
+    out = profile.out_dir()
+    multi = profile.extract.get("mode") == "multi"
+    rkey = profile.extract.get("records_key", "records")
+    for fn in sorted(f for f in os.listdir(out) if f.endswith(".json")):
+        with open(os.path.join(out, fn), encoding="utf-8") as f:
+            wrapper = json.load(f)
+        if multi:
+            for item in dget(wrapper, rkey) or []:
+                if isinstance(item, dict):
+                    yield {**item, "_id": wrapper.get("_id"), "_source": wrapper.get("_source")}
+        else:
+            yield wrapper

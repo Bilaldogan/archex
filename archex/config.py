@@ -50,6 +50,10 @@ class Profile:
     def validate(self) -> dict:
         return self.raw.get("validate", {})
 
+    @property
+    def reconcile(self) -> dict:
+        return self.raw.get("reconcile", {})
+
     def out_dir(self) -> str:
         """Per-profile output directory for extracted JSON records."""
         base = self.input.get("out_dir") or f"{self.name}_out"

@@ -50,6 +50,7 @@ Everything source-specific lives in `profiles/<name>.yaml`:
 - **`extract.mode`** — `single` (one record per page) or `multi` (many per page)
 - **`normalize`** — canonicalise labels + deterministically recompute summaries
 - **`validate`** — rules (required / range / regex / enum) that flag suspect rows
+- **`reconcile`** — key/compare fields to match the same entity across two sources
 - **`export`** — which JSON fields become which columns
 
 ```bash
@@ -95,10 +96,24 @@ Set `json_mode: true` (groq/openai) for guaranteed-valid JSON on large pages.
 
 Use either as a template for your own archive.
 
+## Cross-source reconciliation
+
+Match the same entity across two extracted sources and diff the fields you care
+about — e.g. two city-directory years to see **who moved or changed jobs**, or
+the same company in two catalogues with a different founding date.
+
+```bash
+archex reconcile --profile boston-1916 --against boston-1917 \
+       --key surname,given_name --compare occupation,home_address
+```
+
+Output: a summary (matched / conflicts / only-in-A / only-in-B) plus a
+`*.conflicts.csv` with `key, field, value_A, value_B`. Ambiguous keys (the same
+name matching multiple records) are reported and skipped rather than mis-paired.
+
 ## Roadmap
 
-- Cross-source reconciliation — match the same entity across two sources,
-  diff field-by-field, flag conflicts
+- Fuzzy entity matching for reconciliation (beyond exact key)
 - Human-in-the-loop review — surface `validate`-flagged records for correction
 
 ## Keywords

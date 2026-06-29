@@ -8,6 +8,7 @@ import sys
 from . import compile as compile_mod
 from . import normalize as normalize_mod
 from . import pipeline
+from . import reconcile as reconcile_mod
 from . import validate as validate_mod
 from .config import load_profile, resolve_profile_path
 
@@ -88,6 +89,19 @@ def cmd_validate(args):
     validate_mod.run_validate(_profile(args), write=not args.no_write)
 
 
+def cmd_reconcile(args):
+    prof_a = _profile(args)
+    prof_b = load_profile(resolve_profile_path(args.against))
+    rc = prof_a.reconcile
+    key = (args.key.split(",") if args.key else rc.get("key", []))
+    compare = (args.compare.split(",") if args.compare else rc.get("compare", []))
+    reconcile_mod.run_reconcile(
+        prof_a, prof_b,
+        [k.strip() for k in key], [c.strip() for c in compare],
+        out_base=args.out,
+    )
+
+
 def cmd_export(args):
     formats = [s.strip() for s in args.format.split(",") if s.strip()]
     compile_mod.run_export(_profile(args), formats, out_base=args.out)
@@ -119,6 +133,14 @@ def main(argv=None):
     pv.add_argument("--profile", required=True)
     pv.add_argument("--no-write", action="store_true", help="report only, don't write _flags")
     pv.set_defaults(func=cmd_validate)
+
+    pc = sub.add_parser("reconcile", help="match entities across two sources, flag conflicts")
+    pc.add_argument("--profile", required=True, help="source A")
+    pc.add_argument("--against", required=True, help="source B (another profile name)")
+    pc.add_argument("--key", help="comma-separated match key fields (overrides profile.reconcile.key)")
+    pc.add_argument("--compare", help="comma-separated fields to diff")
+    pc.add_argument("--out", help="output basename")
+    pc.set_defaults(func=cmd_reconcile)
 
     px = sub.add_parser("export", help="flatten records to csv/xlsx/json")
     px.add_argument("--profile", required=True)
