@@ -1,5 +1,7 @@
 # archex — scanned documents → structured data (OCR + AI)
 
+![archex turns a scanned 1916 city-directory page into a structured CSV](examples/demo.png)
+
 **Turn scanned historical records, directories, and catalogues into clean,
 searchable CSV/JSON.** archex runs OCR over page images, sends the text to an
 LLM with *your* schema, and gives you structured rows with page-level
