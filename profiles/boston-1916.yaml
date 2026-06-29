@@ -1,0 +1,76 @@
+# archex profile — Boston (Massachusetts) City Directory, 1916.
+# Sampson & Murdock Co. Public domain (US pre-1929).
+# Demonstrates MULTI-RECORD extraction: one scanned page → ~100+ structured
+# resident records (name / occupation / address) → searchable CSV.
+name: boston-1916
+description: >
+  Turn a scanned 1916 US city directory page into structured genealogy records.
+  Each page holds ~100+ entries (surname, given name, occupation, addresses);
+  archex extracts them all into clean JSON/CSV you can search or join.
+
+input:
+  # Defaults point at the bundled demo so `archex extract --profile boston-1916`
+  # works right after clone. For a full run, repoint image_dir + worklist.
+  image_dir: examples
+  worklist: examples/boston-1916.worklist.json
+  out_dir: boston-1916_out
+
+# One scanned page contains many records → multi mode.
+extract:
+  mode: multi
+  records_key: records
+
+ocr:
+  engine: tesseract
+  lang: eng
+  psm: 3                # auto page segmentation — handles the two-column layout
+  preprocess: { grayscale: true, contrast: 1.6, sharpen: true, max_width: 2800 }
+
+llm:
+  provider: groq
+  model: llama-3.3-70b-versatile
+  temperature: 0.2
+  max_tokens: 8000      # demo crops the page to ~45 records (free-tier friendly)
+  json_mode: true       # Groq/OpenAI guaranteed-valid-JSON response_format
+  rate_limit_delay: 6.0
+  system_prompt: |
+    You extract structured records from an OCR'd page of a 1916 United States
+    city directory (Boston). Each entry is one resident or business, typically:
+      Surname Given[ middle], occupation, work address, home address
+    Example lines and how to parse them:
+      "Fuller Chester dairyman 63 Endicott h at Maplewood"
+        -> surname=Fuller, given=Chester, occupation=dairyman,
+           work_address=63 Endicott, home_address=Maplewood
+      "Fuller Albert E (Fuller & Co) h 233 Highland Park av Rox"
+        -> surname=Fuller, given=Albert E, occupation=(Fuller & Co),
+           home_address=233 Highland Park av Rox
+    Directory abbreviations: h = home/house, b or bds = boards, rm = room,
+      r = rear, av = avenue, st = street, Rox = Roxbury, Dor = Dorchester,
+      Camb = Cambridge, Som = Somerville. Keep them as written in addresses.
+    RULES:
+    - Extract EVERY entry on the page, in order.
+    - The surname is often printed only on the first entry of a run and implied
+      ("    " or a dash) for following entries — carry the last surname forward.
+    - Copy names/addresses verbatim; only fix obvious OCR errors.
+    - If a field is absent, use null. Do NOT invent data.
+    Return ONLY this JSON (no markdown fence, no commentary):
+    {
+      "records": [
+        {"surname":"...","given_name":"...","occupation":"...",
+         "work_address":"...","home_address":"..."}
+      ]
+    }
+  user_template: |
+    City directory page {page_start}. OCR text:
+    {ocr_text}
+
+    JSON output:
+
+export:
+  fields:
+    - { col: Surname, path: surname }
+    - { col: GivenName, path: given_name }
+    - { col: Occupation, path: occupation }
+    - { col: WorkAddress, path: work_address }
+    - { col: HomeAddress, path: home_address }
+    - { col: Page, path: _source.page_start }

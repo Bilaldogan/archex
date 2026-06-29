@@ -57,8 +57,22 @@ def run_export(profile: Profile, formats: list[str], out_base: str | None = None
         raise ValueError("profile.export.fields not set")
     records = _load_records(profile)
     cols = [f["col"] for f in fields]
-    rows = [[_cell(r, f) for f in fields] for r in records]
     base = out_base or profile.name
+
+    # In multi mode each extracted file wraps a list of records (one page → N
+    # rows). Flatten: each item becomes a row, merged with page-level provenance
+    # (_id / _source) so export paths can reach both item and wrapper fields.
+    if profile.extract.get("mode") == "multi":
+        rkey = profile.extract.get("records_key", "records")
+        rows = []
+        for w in records:
+            for item in dget(w, rkey) or []:
+                ctx = dict(item) if isinstance(item, dict) else {"value": item}
+                ctx.setdefault("_id", w.get("_id"))
+                ctx.setdefault("_source", w.get("_source"))
+                rows.append([_cell(ctx, f) for f in fields])
+    else:
+        rows = [[_cell(r, f) for f in fields] for r in records]
 
     if "csv" in formats or "json" in formats or not formats:
         pass  # csv default below

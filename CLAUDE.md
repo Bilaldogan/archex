@@ -6,9 +6,7 @@ Tarihsel basili kaynaklardan (katalog/yillik/rehber) yapilandirilmis veri cikari
 Motor kaynaktan bagimsiz; tum kaynak-spesifik sey `profiles/<name>.yaml`'de.
 
 ## Koken
-`docs/osmanli-sirketler/extraction/` altindaki Pech 1911 / Annuaire cikarim
-kodundan generic'lestirildi. Enes ile akademik isbirligi hatti (Osmanli sirketler).
-Para hedefi degil — arastirma araci, ileride FOSS olabilir.
+Tarihsel arsiv cikarim pipeline'indan generic'lestirildi. Arastirma + FOSS araci.
 
 ## Mimari kural
 - **Motora kaynak-spesifik kod EKLEME.** Yeni kaynak = yeni profil YAML.

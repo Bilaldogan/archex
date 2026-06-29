@@ -1,36 +1,66 @@
-# archex
+# archex — scanned documents → structured data (OCR + AI)
 
-**Config-driven historical document → structured data extractor.**
+**Turn scanned historical records, directories, and catalogues into clean,
+searchable CSV/JSON.** archex runs OCR over page images, sends the text to an
+LLM with *your* schema, and gives you structured rows with page-level
+provenance — driven entirely by one YAML config file. No code changes per source.
 
-Point archex at scanned pages of a historical catalogue, almanac, registry, or
-directory; describe what you want in a single YAML *profile*; get back clean,
-provenance-tagged JSON/CSV/XLSX. The OCR → LLM → normalize → export engine never
-changes — only the profile does.
+Great for **genealogy, city directories, census and passenger lists, old
+company registries, archives, and digital-humanities** projects where generic
+PDF parsers fall short: bad OCR on old print, domain-specific fields, hundreds
+of repeating records per page, and citations you can actually footnote.
 
-Built for digital-humanities / archival research where generic PDF parsers fall
-short: bad OCR on old print, domain-specific schemas, per-record classification,
-and **page-level citations** you can actually footnote.
+```
+scanned page ─▶ OCR ─▶ LLM (your schema) ─▶ JSON ─▶ normalize ─▶ CSV / XLSX
+```
 
 ---
 
-## How it works
+## Quickstart (real demo, ~1 minute)
 
+This repo ships a working demo: one page of the **1916 Boston City Directory**
+(public domain) → a structured table of residents.
+
+```bash
+git clone https://github.com/Bilaldogan/archex && cd archex
+pip install -e ".[export]"          # needs the `tesseract` binary too
+export GROQ_API_KEY=...             # free key from console.groq.com
+
+archex extract --profile boston-1916   # OCR + LLM → JSON (the bundled page)
+archex export  --profile boston-1916 --format csv,xlsx
 ```
-page images ──▶ OCR ──▶ LLM (your schema) ──▶ JSON ──▶ normalize ──▶ csv / xlsx
-                 │                                         │
-            ocr: block                              normalize: block
-            in profile                              in profile
-```
+
+You get ~68 rows like:
+
+| Surname | GivenName | Occupation | WorkAddress | HomeAddress | Page |
+|---------|-----------|------------|-------------|-------------|------|
+| Fuerst  | Alexander | binder     | Mass Historical Soc | 413 Mass av Belmont | 801 |
+| Fugazza | John      | helper     |             | 8 Porter    | 801 |
+| Fugler  | Paul      | supt       | 400 Congress | 237 Talbot av Dor | 801 |
+
+(See `examples/sample-output.csv` for the full extracted table.)
+
+## Bring your own source
 
 Everything source-specific lives in `profiles/<name>.yaml`:
 
 - **`ocr`** — engine (tesseract/easyocr), language, preprocessing
 - **`llm`** — provider/model + your extraction prompt and output JSON shape
+- **`extract.mode`** — `single` (one record per page) or `multi` (many per page)
 - **`normalize`** — canonicalise labels + deterministically recompute summaries
-- **`export`** — which fields become which columns
+- **`export`** — which JSON fields become which columns
 
-A *worklist* (`[{id, images, ...}]`) lists the records to process. Each entry's
-extra fields are fed to your prompt template and preserved under `_source`.
+```bash
+archex init my-source              # scaffold profiles/my-source.yaml
+# edit the profile + point it at your images/worklist
+archex extract  --profile my-source
+archex status   --profile my-source
+archex export   --profile my-source --format csv,xlsx
+```
+
+A *worklist* (`[{id, images, ...}]`) lists what to process; entry fields feed
+your prompt and are preserved under `_source` for provenance. `extract` is
+**resumable** — done records are skipped, failures land in `<id>.ERROR.txt`.
 
 ## Install
 
@@ -40,48 +70,41 @@ pip install -e ".[easyocr]"       # optional EasyOCR backend
 pip install -e ".[export]"        # optional XLSX export (openpyxl)
 ```
 
-Requires the `tesseract` binary for the default OCR engine
-(`brew install tesseract tesseract-lang`).
-
-## Use
-
-```bash
-archex init my-source                          # scaffold profiles/my-source.yaml
-# edit the profile + create the worklist json
-
-export GROQ_API_KEY=...                         # keys come from env, never the repo
-archex extract  --profile my-source            # OCR → LLM → JSON (resumable)
-archex status   --profile my-source            # progress
-archex normalize --profile my-source           # canonical labels + recomputed summaries
-archex export   --profile my-source --format csv,xlsx
-```
-
-`extract` is **resumable**: already-extracted records are skipped, failures are
-written as `<id>.ERROR.txt` and retried on the next run.
+Requires the `tesseract` binary (`brew install tesseract tesseract-lang` /
+`apt install tesseract-ocr`).
 
 ## LLM providers
 
-| provider    | env var             | notes                       |
-|-------------|---------------------|-----------------------------|
-| `groq`      | `GROQ_API_KEY`      | default, free-tier friendly |
-| `openai`    | `OPENAI_API_KEY`    | OpenAI-compatible           |
-| `ollama`    | —                   | local, no key (`base_url`)  |
-| `anthropic` | `ANTHROPIC_API_KEY` | native messages API         |
+| provider    | env var             | notes                          |
+|-------------|---------------------|--------------------------------|
+| `groq`      | `GROQ_API_KEY`      | default, free tier, JSON mode  |
+| `openai`    | `OPENAI_API_KEY`    | OpenAI-compatible              |
+| `ollama`    | —                   | local, no key (`base_url`)     |
+| `anthropic` | `ANTHROPIC_API_KEY` | native messages API            |
 
-## Reference profile
+Set `json_mode: true` (groq/openai) for guaranteed-valid JSON on large pages.
 
-`profiles/pech-1911.yaml` is a worked example: extracting Ottoman joint-stock
-companies from Edgar Pech's 1911 *Manuel des Sociétés Anonymes*, including full
-board rosters with per-member classification and page provenance. Use it as a
-template for your own source.
+## Example profiles
+
+- `profiles/boston-1916.yaml` — **multi-record**: a city-directory page → 100+
+  resident records (name / occupation / address). The quickstart demo.
+- `profiles/pech-1911.yaml` — **single-record**: a company catalogue entry →
+  company metadata + full board roster with classification and page provenance.
+
+Use either as a template for your own archive.
 
 ## Roadmap
 
-- **Multi-record pages** — N records per scanned page (almanac/directory layouts)
-- **Cross-source reconciliation** — match the same entity across two sources,
-  diff field-by-field, flag conflicts (automates manual source-conflict tables)
-- **Field-level confidence + validation rules** (e.g. year range sanity checks)
-- **Human-in-the-loop review** — flag low-confidence records for correction
+- Cross-source reconciliation — match the same entity across two sources,
+  diff field-by-field, flag conflicts
+- Field-level confidence + validation rules (e.g. date/range sanity checks)
+- Human-in-the-loop review — flag low-confidence records for correction
+
+## Keywords
+
+OCR to CSV · extract data from scanned PDF · digitize old records · genealogy
+data extraction · city directory OCR · historical records to spreadsheet · LLM
+document parsing · structured data extraction · archive digitization.
 
 ## License
 

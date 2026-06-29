@@ -42,6 +42,10 @@ class Profile:
     def export(self) -> dict:
         return self.raw.get("export", {})
 
+    @property
+    def extract(self) -> dict:
+        return self.raw.get("extract", {})
+
     def out_dir(self) -> str:
         """Per-profile output directory for extracted JSON records."""
         base = self.input.get("out_dir") or f"{self.name}_out"

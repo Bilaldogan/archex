@@ -64,6 +64,9 @@ def _chat_openai_compat(cfg, system, user, base_url):
         "temperature": cfg.get("temperature", 0.3),
         "max_tokens": cfg.get("max_tokens", 8192),
     }
+    if cfg.get("json_mode"):
+        # forces syntactically valid JSON (OpenAI/Groq); prompt must mention JSON
+        body["response_format"] = {"type": "json_object"}
     base = cfg.get("base_url", base_url)
     r = _post_with_retry(f"{base}/chat/completions", headers, body)
     if r.status_code != 200:
